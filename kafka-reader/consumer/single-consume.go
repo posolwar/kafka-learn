@@ -32,6 +32,7 @@ func (mc *MessageConsumer) singleConsume(ctx context.Context) error {
 				continue
 			}
 
+			// TODO: В дальнейшем вынести в канал для вывода наружу
 			slog.Info("SingleMessageConsumer получено", "сообщение:", message.Message)
 		}
 	}

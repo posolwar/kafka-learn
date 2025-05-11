@@ -34,6 +34,8 @@ func (mc *MessageConsumer) batchConsume(ctx context.Context) error {
 				}
 			}
 
+			receivedMessages := make([]string, 0, mc.cfg.MaxPollRecords)
+
 			// Если собрали сообщения, обрабатываем их
 			if len(batch) > 0 {
 				slog.Error("BatchMessageConsumer собрал сообщения", "кол-во", len(batch))
@@ -45,11 +47,21 @@ func (mc *MessageConsumer) batchConsume(ctx context.Context) error {
 						continue
 					}
 
-					slog.Info("BatchMessageConsumer получено", "сообщения", message.Message)
+					receivedMessages = append(receivedMessages, message.Message)
 				}
 
 				if _, err := mc.KafkaClient.Commit(); err != nil {
 					slog.Error("BatchMessageConsumer ошибка коммита", "err", err)
+				}
+			}
+
+			// TODO: В дальнейшем вынести в канал для вывода наружу
+			if len(receivedMessages) > 0 {
+				slog.Info("Полученный список сообщений",
+					"Кол-во сообщений", len(receivedMessages))
+
+				for i, msg := range receivedMessages {
+					slog.Info("Сообщение", "номер", i, "подробности", msg)
 				}
 			}
 		}
