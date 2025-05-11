@@ -1,35 +1,29 @@
-FROM golang:1.24.3 AS builder
+# Стадия сборки
+FROM  golang:1.24-alpine  AS builder
 
-# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-
+# Копируем go.mod и go.sum
 COPY go.mod ./
 COPY go.sum ./
 
+# Загружаем зависимости
 RUN go mod download
 
-# Копируем весь исходный код проекта
+# Копируем весь проект
 COPY . .
 
-# Компилируем kafka-writer
-RUN CGO_ENABLED=0 GOOS=linux go build -o /kafka-writer kafka-writer/main.go
+# RUN apk add --no-cache build-base librdkafka-dev 
 
-# Компилируем kafka-reader
-RUN CGO_ENABLED=0 GOOS=linux go build -o /kafka-reader kafka-reader/main.go
+RUN CGO_ENABLED=1 go build -tags musl -o /kafka-reader kafka-reader/main.go
 
-# Создаем финальный образ
+# Финальный образ
 FROM alpine:latest
 
-# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем скомпилированные бинарные файлы из builder
-COPY --from=builder /kafka-writer /app/kafka-writer
-COPY --from=builder /kafka-reader /app/kafka-reader
+# Копируем скомпилированные бинарники
+COPY --from=builder /kafka-reader .
 
-# Устанавливаем зависимости для работы бинарных файлов
-RUN apk --no-cache add ca-certificates
-
-# Указываем точку входа 
-CMD ["/bin/sh"]
+# Запускаем kafka-reader
+CMD ["./kafka-reader"]
