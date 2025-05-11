@@ -8,8 +8,8 @@ import (
 	"log/slog"
 	"os"
 
-	"practrice/kafka-writer/messager"
-	"practrice/pkg/message"
+	"github.com/posolwar/kafka-learn/kafka-writer/messager"
+	"github.com/posolwar/kafka-learn/pkg/message"
 )
 
 type Flags struct {

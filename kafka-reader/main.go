@@ -8,7 +8,7 @@ import (
 	"log/slog"
 	"os"
 
-	"practrice/kafka-reader/consumer"
+	"github.com/posolwar/kafka-learn/kafka-reader/consumer"
 )
 
 type Flags struct {

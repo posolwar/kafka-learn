@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"practrice/pkg/message"
+	"github.com/posolwar/kafka-learn/pkg/message"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/confluentinc/confluent-kafka-go/schemaregistry"
