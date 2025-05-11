@@ -1,5 +1,3 @@
-version: "3.9"  # Указываем версию спецификации
-
 services:
   # Сборка образа для чтения из кафки
   app:
@@ -86,66 +84,6 @@ services:
       - kafka-2
     networks:
       - kafka-network
-
-  producer:
-    image: kafka-reader
-    command: /app/kafka-writer -topic=topic -message="test message" -bootstrap-servers=kafka-0:9094 -schema-registry=http://schema-registry:8081
-    depends_on:
-      - kafka-0
-      - kafka-1
-      - kafka-2
-      - schema-registry
-    networks:
-      - kafka-network
-
-  single-consumer-1:
-    image: kafka-reader
-    restart: unless-stopped
-    command: /app/kafka-reader -group-id=0 -topic=topic  -mode=single -bootstrap-servers=kafka-0:9094 -schema-registry=http://schema-registry:8081
-    depends_on:
-      - kafka-0
-      - kafka-1
-      - kafka-2
-      - schema-registry
-    networks:
-      - kafka-network
-
-  single-consumer-2:
-    image: kafka-reader
-    restart: unless-stopped
-    command: /app/kafka-reader -group-id=0 -topic=topic  -mode=single -bootstrap-servers=kafka-0:9094 -schema-registry=http://schema-registry:8081
-    depends_on:
-      - kafka-0
-      - kafka-1
-      - kafka-2
-      - schema-registry
-    networks:
-      - kafka-network
-
-  batch-consumer-1:
-    image: kafka-reader
-    restart: unless-stopped
-    command: /app/kafka-reader -group-id=1 -topic=topic  -mode=batch -bootstrap-servers=kafka-0:9094 -schema-registry=http://schema-registry:8081
-    depends_on:
-      - kafka-0
-      - kafka-1
-      - kafka-2
-      - schema-registry
-    networks:
-      - kafka-network
-
-  batch-consumer-2:
-    image: kafka-reader
-    restart: unless-stopped
-    command: /app/kafka-reader -group-id=1 -topic=topic  -mode=batch -bootstrap-servers=kafka-0:9094 -schema-registry=http://schema-registry:8081
-    depends_on:
-      - kafka-0
-      - kafka-1
-      - kafka-2
-      - schema-registry
-    networks:
-      - kafka-network
-
  
   schema-registry:
     image: confluentinc/cp-schema-registry:latest
@@ -171,5 +109,6 @@ volumes:
 networks:
   kafka-network:
     driver: bridge
+ 
 
 

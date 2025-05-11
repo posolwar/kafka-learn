@@ -1,0 +1,8 @@
+services:
+  # Сборка образа для чтения из кафки
+  app:
+    build:
+      context: "."
+      # platforms:
+      #   - linux/arm64  # Нативная архитектура для M1 Mac
+    image: kafka-reader

@@ -1,6 +1,6 @@
 module github.com/posolwar/kafka-learn
 
-go 1.24.3
+go 1.24
 
 require github.com/confluentinc/confluent-kafka-go v1.9.2
 
