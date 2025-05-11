@@ -73,8 +73,13 @@ services:
     networks:
       - kafka-network
 
-  single-consumer-1:
+
+  app:
     build: .
+    image: kafka-learn-app
+
+  single-consumer-1:
+    image: kafka-learn-app
     command: /app/kafka-reader -topic=topic -group-id=single-group-1 -mode=single -bootstrap-servers=kafka-0:9092 -schema-registry=http://schema-registry:8081
     depends_on:
       - kafka-0
@@ -83,7 +88,7 @@ services:
       - kafka-network
 
   single-consumer-2:
-    build: .
+    image: kafka-learn-app
     command: /app/kafka-reader -topic=topic -group-id=single-group-2 -mode=single -bootstrap-servers=kafka-0:9092 -schema-registry=http://schema-registry:8081
     depends_on:
       - kafka-0
@@ -92,7 +97,7 @@ services:
       - kafka-network
 
   batch-consumer-1:
-    build: .
+    image: kafka-learn-app
     command: /app/kafka-reader -topic=topic -group-id=batch-group-1 -mode=batch -bootstrap-servers=kafka-0:9092 -schema-registry=http://schema-registry:8081
     depends_on:
       - kafka-0
@@ -101,7 +106,7 @@ services:
       - kafka-network
 
   batch-consumer-2:
-    build: .
+    image: kafka-learn-app
     command: /app/kafka-reader -topic=topic -group-id=batch-group-2 -mode=batch -bootstrap-servers=kafka-0:9092 -schema-registry=http://schema-registry:8081
     depends_on:
       - kafka-0
@@ -110,7 +115,7 @@ services:
       - kafka-network
 
   producer:
-    build: .
+    image: kafka-learn-app
     command: /app/kafka-writer -topic=topic -message="test message" -bootstrap-servers=kafka-0:9092 -schema-registry=http://schema-registry:8081
     depends_on:
       - kafka-0

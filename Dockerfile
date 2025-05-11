@@ -1,11 +1,11 @@
-FROM golang:1.22 AS builder
+FROM golang:1.24.3 AS builder
 
 # Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-# Копируем go.mod и go.sum (если go.sum существует)
+
 COPY go.mod ./
-COPY go.sum* ./
+COPY go.sum ./
 
 RUN go mod download
 
